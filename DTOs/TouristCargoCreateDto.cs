@@ -35,5 +35,9 @@ namespace TouristAgencyApp.DTOs
 
         [Required]
         public int flight_id { get; set; }
+
+        [Required]
+        [RegularExpression("Принят на склад|Упакован|Готов к отправке|Отправлен")]
+        public string status { get; set; } = "Принят на склад";
     }
 }

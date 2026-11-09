@@ -9,5 +9,6 @@
 
         // НОВОЕ ПОЛЕ: Тип рейса (Грузовой / Пассажирский)
         public string flight_type { get; set; } = string.Empty;
+        public int seat_capacity { get; set; }
     }
 }

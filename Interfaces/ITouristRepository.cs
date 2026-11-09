@@ -11,7 +11,5 @@ namespace TouristAgencyApp.Interfaces
         Task<Tourist?> GetByIdAsync(int id);
         Task<bool> UpdateAsync(int id, TouristCreateDto tourist);
         Task<bool> DeleteAsync(int id);
-
-        Task<TouristProfileDto?> GetTouristProfileAsync(int id);
     }
 }

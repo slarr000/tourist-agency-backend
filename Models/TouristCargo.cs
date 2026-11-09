@@ -14,5 +14,6 @@
         public decimal insurance_cost { get; set; }
         public decimal total_amount { get; set; }
         public int flight_id { get; set; }
+        public string status { get; set; } = "Принят на склад";
     }
 }

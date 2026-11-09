@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using TouristAgencyApp.DTOs;
 using TouristAgencyApp.Interfaces;
 
@@ -16,65 +16,38 @@ namespace TouristAgencyApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTourists()
+        public async Task<IActionResult> GetTourists()
         {
-            var tourists = await _touristRepository.GetAllAsync();
-            return Ok(tourists);
+            return Ok(await _touristRepository.GetAllAsync());
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetTourist(int id)
+        {
+            var tourist = await _touristRepository.GetByIdAsync(id);
+            return tourist is null ? NotFound() : Ok(tourist);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTourist([FromBody] TouristCreateDto touristDto)
+        public async Task<IActionResult> CreateTourist([FromBody] TouristCreateDto dto)
         {
-            var newTouristId = await _touristRepository.AddAsync(touristDto);
-            return Created($"/api/Tourists/{newTouristId}", new { id = newTouristId });
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetTouristById(int id)
-        {
+            var id = await _touristRepository.AddAsync(dto);
             var tourist = await _touristRepository.GetByIdAsync(id);
-            if (tourist == null)
-            {
-                return NotFound($"Турист с ID {id} не найден.");
-            }
-            return Ok(tourist);
+
+            return CreatedAtAction(nameof(GetTourist), new { id }, tourist);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTourist(int id, [FromBody] TouristCreateDto touristDto)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateTourist(int id, [FromBody] TouristCreateDto dto)
         {
-            var updated = await _touristRepository.UpdateAsync(id, touristDto);
-            if (!updated)
-            {
-                return NotFound($"Турист с ID {id} для обновления не найден.");
-            }
-
-            return NoContent();
+            return await _touristRepository.UpdateAsync(id, dto) ? NoContent() : NotFound();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteTourist(int id)
         {
-            var deleted = await _touristRepository.DeleteAsync(id);
-            if (!deleted)
-            {
-                return NotFound($"Турист с ID {id} для удаления не найден.");
-            }
-
-            return NoContent();
+            return await _touristRepository.DeleteAsync(id) ? NoContent() : NotFound();
         }
 
-        [HttpGet("{id}/profile")]
-        public async Task<IActionResult> GetTouristProfile(int id)
-        {
-            var profile = await _touristRepository.GetTouristProfileAsync(id);
-
-            if (profile == null)
-            {
-                return NotFound($"Профиль туриста с ID {id} не найден.");
-            }
-
-            return Ok(profile);
-        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using Npgsql;
 
 namespace TouristAgencyApp.Middlewares
 {
@@ -31,6 +32,17 @@ namespace TouristAgencyApp.Middlewares
 
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
+            if (exception is PostgresException { SqlState: "23514" } constraintException)
+            {
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return context.Response.WriteAsync(JsonSerializer.Serialize(new
+                {
+                    statusCode = context.Response.StatusCode,
+                    message = constraintException.MessageText
+                }));
+            }
+
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError; // Код 500
 

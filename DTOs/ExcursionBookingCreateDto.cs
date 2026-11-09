@@ -9,5 +9,7 @@ namespace TouristAgencyApp.DTOs
 
         [Required]
         public int excursion_id { get; set; }
+
+        public int? child_id { get; set; }
     }
 }

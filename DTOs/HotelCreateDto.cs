@@ -8,6 +8,10 @@ namespace TouristAgencyApp.DTOs
         [MaxLength(150, ErrorMessage = "Максимальная длина названия - 150 символов.")]
         public string hotel_name { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Укажите страну гостиницы.")]
+        [MaxLength(100)]
+        public string country { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "Укажите количество звезд.")]
         [Range(1, 5, ErrorMessage = "Количество звезд должно быть от 1 до 5.")]
         public int stars_count { get; set; }
