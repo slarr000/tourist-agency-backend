@@ -1,0 +1,26 @@
+@HostAddress = https://localhost:7062
+### Получить все гостиницы
+GET {{HostAddress}}/api/Hotels
+Accept: application/json
+
+### Добавить новую гостиницу
+POST {{HostAddress}}/api/Hotels
+Content-Type: application/json
+
+{
+  "hotel_name": "Minsk Marriott Hotel",
+  "stars_count": 5,
+  "address": "пр. Победителей 20",
+  "price_per_night": 350.50
+}
+
+### Обновить данные гостиницы
+PUT {{HostAddress}}/api/Hotels/1
+Content-Type: application/json
+
+{
+  "hotel_name": "Minsk Marriott Hotel Updated",
+  "stars_count": 5,
+  "address": "пр. Победителей 20",
+  "price_per_night": 380.00
+}
